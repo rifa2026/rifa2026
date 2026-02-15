@@ -6,11 +6,14 @@ let vendidos = {};
 let numeroActual = null;
 let registrando = false;
 
-// Crear números
+/* =========================
+   CREAR NÚMEROS
+========================= */
 function crearNumeros() {
     grid.innerHTML = "";
 
     for (let i = 100; i <= 300; i++) {
+
         let div = document.createElement("div");
         div.classList.add("number");
         div.innerText = i;
@@ -28,8 +31,11 @@ function crearNumeros() {
     }
 }
 
-// Cargar vendidos
+/* =========================
+   CARGAR VENDIDOS
+========================= */
 async function cargarVendidos() {
+
     try {
         const response = await fetch(WEB_APP_URL);
         const data = await response.json();
@@ -42,9 +48,12 @@ async function cargarVendidos() {
 
         document.querySelectorAll(".number").forEach(div => {
             let num = Number(div.dataset.numero);
+
             if (vendidos[num]) {
                 div.classList.add("sold");
-                div.title = "Vendido a: " + vendidos[num].nombre + " " + vendidos[num].apellido;
+                div.title = "Vendido a: " +
+                    vendidos[num].nombre + " " +
+                    vendidos[num].apellido;
             }
         });
 
@@ -53,55 +62,73 @@ async function cargarVendidos() {
     }
 }
 
-// Sorteo
+/* =========================
+   REALIZAR SORTEO (SEGURO)
+========================= */
 async function realizarSorteo() {
-    let clave = prompt("Contraseña admin:");
 
-    if (clave !== "20s@nto$26") {
-        alert("Contraseña incorrecta");
-        return;
-    }
+    let clave = prompt("Contraseña admin:");
+    if (!clave) return;
 
     try {
-        const response = await fetch(WEB_APP_URL);
-        const data = await response.json();
 
-        if (data.length === 0) {
-            alert("No hay números vendidos");
+        const response = await fetch(WEB_APP_URL, {
+            method: "POST",
+            body: JSON.stringify({
+                action: "sorteo",
+                password: clave
+            })
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message);
             return;
         }
 
-        let ganador = data[Math.floor(Math.random() * data.length)];
-
-        document.getElementById("numeroGrande").innerText = ganador.numero;
-        document.getElementById("nombreGanador").innerText =
-            ganador.nombre + " " + ganador.apellido;
-
-        document.getElementById("pantallaGanador").style.display = "flex";
-
-        document.querySelectorAll(".ganador-numero")
-            .forEach(el => el.classList.remove("ganador-numero"));
-
-        const div = document.querySelector(`[data-numero='${ganador.numero}']`);
-        div.classList.add("ganador-numero");
+        mostrarGanador(result);
 
     } catch (error) {
         alert("Error en el sorteo");
     }
 }
 
+/* =========================
+   MOSTRAR GANADOR
+========================= */
+function mostrarGanador(data) {
+
+    document.getElementById("numeroGrande").innerText = data.numero;
+    document.getElementById("nombreGanador").innerText =
+        data.nombre + " " + data.apellido;
+
+    document.getElementById("pantallaGanador").style.display = "flex";
+
+    // limpiar ganador previo
+    document.querySelectorAll(".ganador-numero")
+        .forEach(el => el.classList.remove("ganador-numero"));
+
+    const div = document.querySelector(`[data-numero='${data.numero}']`);
+    if (div) div.classList.add("ganador-numero");
+}
+
 function cerrarGanador() {
     document.getElementById("pantallaGanador").style.display = "none";
 }
 
-// Reiniciar
+/* =========================
+   REINICIAR RIFA
+========================= */
 async function reiniciarRifa() {
+
     let clave = prompt("Contraseña de administrador:");
     if (!clave) return;
 
     if (!confirm("¿Seguro que deseas borrar TODOS los registros?")) return;
 
     try {
+
         const response = await fetch(WEB_APP_URL, {
             method: "POST",
             body: JSON.stringify({
@@ -124,15 +151,20 @@ async function reiniciarRifa() {
     }
 }
 
-// Modal
+/* =========================
+   MODAL
+========================= */
 function cerrarModal() {
     document.getElementById("modal").classList.add("hidden");
     document.getElementById("nombreInput").value = "";
     document.getElementById("apellidoInput").value = "";
 }
 
-// Confirmar registro
+/* =========================
+   CONFIRMAR REGISTRO
+========================= */
 async function confirmarRegistro() {
+
     if (registrando) return;
     registrando = true;
 
@@ -152,16 +184,21 @@ async function confirmarRegistro() {
     cerrarModal();
 
     try {
+
         const response = await fetch(WEB_APP_URL, {
             method: "POST",
-            body: JSON.stringify({ numero, nombre, apellido })
+            body: JSON.stringify({
+                numero,
+                nombre,
+                apellido
+            })
         });
 
         const result = await response.json();
 
         if (!result.success) {
             div.classList.remove("sold");
-            alert("Número ya tomado");
+            alert(result.message);
         } else {
             vendidos[numero] = { nombre, apellido };
         }
@@ -174,6 +211,8 @@ async function confirmarRegistro() {
     registrando = false;
 }
 
-// Inicializar
+/* =========================
+   INICIALIZAR
+========================= */
 crearNumeros();
 cargarVendidos();
