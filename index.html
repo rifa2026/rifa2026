@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Rifa Mini Split 2026</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>🎉 Rifa Mini Split 2026 🎉</h1>
+    <p>Selecciona tu número del 100 al 300</p>
+
+    <div class="grid" id="numberGrid"></div>
+
+    <div class="actions">
+        <button onclick="realizarSorteo()">🎲 Realizar Sorteo</button>
+        <button onclick="reiniciarRifa()">🔐 Reiniciar Rifa</button>
+    </div>
+
+    <h2 id="resultado"></h2>
+</div>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Registrar número <span id="numeroSeleccionado"></span></h3>
+    <input type="text" id="nombreInput" placeholder="Nombre">
+    <input type="text" id="apellidoInput" placeholder="Apellido">
+    <div class="modal-buttons">
+      <button onclick="confirmarRegistro()">Confirmar</button>
+      <button onclick="cerrarModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div id="pantallaGanador" class="pantalla-ganador hidden">
+  <div class="ganador-box">
+    <h2>🎉 ¡GANADOR OFICIAL! 🎉</h2>
+    <div id="numeroGrande"></div>
+    <p id="nombreGanador"></p>
+    <button onclick="cerrarGanador()">Cerrar</button>
+  </div>
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>
