@@ -6,9 +6,6 @@ let vendidos = {};
 let numeroActual = null;
 let registrando = false;
 
-/* =========================
-   CREAR NÚMEROS
-========================= */
 function crearNumeros() {
     grid.innerHTML = "";
 
@@ -31,9 +28,6 @@ function crearNumeros() {
     }
 }
 
-/* =========================
-   CARGAR VENDIDOS
-========================= */
 async function cargarVendidos() {
 
     try {
@@ -62,9 +56,6 @@ async function cargarVendidos() {
     }
 }
 
-/* =========================
-   REALIZAR SORTEO (SEGURO)
-========================= */
 async function realizarSorteo() {
 
     let clave = prompt("Contraseña admin:");
@@ -94,9 +85,6 @@ async function realizarSorteo() {
     }
 }
 
-/* =========================
-   MOSTRAR GANADOR
-========================= */
 function mostrarGanador(data) {
 
     document.getElementById("numeroGrande").innerText = data.numero;
@@ -117,9 +105,6 @@ function cerrarGanador() {
     document.getElementById("pantallaGanador").style.display = "none";
 }
 
-/* =========================
-   REINICIAR RIFA
-========================= */
 async function reiniciarRifa() {
 
     let clave = prompt("Contraseña de administrador:");
@@ -160,9 +145,6 @@ function cerrarModal() {
     document.getElementById("apellidoInput").value = "";
 }
 
-/* =========================
-   CONFIRMAR REGISTRO
-========================= */
 async function confirmarRegistro() {
 
     if (registrando) return;
@@ -211,8 +193,6 @@ async function confirmarRegistro() {
     registrando = false;
 }
 
-/* =========================
-   INICIALIZAR
-========================= */
 crearNumeros();
 cargarVendidos();
+
