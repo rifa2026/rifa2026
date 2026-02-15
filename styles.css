@@ -12,10 +12,6 @@ body {
     margin: auto;
 }
 
-h1 {
-    margin-bottom: 10px;
-}
-
 .grid {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -57,10 +53,6 @@ h1 {
     font-weight: bold;
 }
 
-.actions {
-    margin-top: 20px;
-}
-
 button {
     padding: 10px 18px;
     margin: 10px;
@@ -70,16 +62,9 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    opacity: 0.9;
-}
-
 .modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.6);
     display: flex;
     justify-content: center;
@@ -87,7 +72,7 @@ button:hover {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .modal-content {
@@ -105,53 +90,22 @@ button:hover {
     margin: 8px 0;
 }
 
-.modal-buttons {
-    margin-top: 10px;
-}
-
-.loading {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-.modal-buttons button {
-    padding: 8px 18px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s ease;
-}
-
-/* Botón Confirmar */
 .modal-buttons button:first-child {
     background-color: #4CAF50;
     color: white;
 }
 
-.modal-buttons button:first-child:hover {
-    background-color: #43a047;
-    transform: scale(1.05);
-}
-
-/* Botón Cancelar */
 .modal-buttons button:last-child {
     background-color: #e53935;
     color: white;
 }
 
-.modal-buttons button:last-child:hover {
-    background-color: #d32f2f;
-    transform: scale(1.05);
-}
-
-
-/* Pantalla de Ganador */
+/* Pantalla Ganador */
 .pantalla-ganador {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.85);
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 9999;
@@ -162,7 +116,6 @@ button:hover {
     padding: 40px;
     border-radius: 15px;
     text-align: center;
-    animation: zoomIn 0.4s ease;
 }
 
 #numeroGrande {
@@ -177,18 +130,7 @@ button:hover {
     margin-bottom: 20px;
 }
 
-@keyframes zoomIn {
-    from { transform: scale(0.5); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
 .ganador-numero {
     background-color: gold !important;
     color: black !important;
-    animation: parpadeo 1s infinite alternate;
-}
-
-@keyframes parpadeo {
-    from { box-shadow: 0 0 5px gold; }
-    to { box-shadow: 0 0 20px gold; }
 }
