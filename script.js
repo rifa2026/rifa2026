@@ -1,12 +1,12 @@
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzkkN_o8fLs5xVQ0t2OVQNIPO47z5_ReeCkeV_rH-GAiUXmUQV1gm8Fy1JIvEftZJ9SNg/exec";
 
 const grid = document.getElementById("numberGrid");
+
 let vendidos = {};
 let numeroActual = null;
 let registrando = false;
 
-
-// Primero dibujamos TODOS los números
+// Crear números
 function crearNumeros() {
     grid.innerHTML = "";
 
@@ -17,7 +17,7 @@ function crearNumeros() {
         div.dataset.numero = i;
 
         div.onclick = function () {
-            if (vendidos[Number(div.dataset.numero)]) return;
+            if (vendidos[i]) return;
 
             numeroActual = i;
             document.getElementById("numeroSeleccionado").innerText = i;
@@ -28,7 +28,7 @@ function crearNumeros() {
     }
 }
 
-// Luego cargamos vendidos y los pintamos
+// Cargar vendidos
 async function cargarVendidos() {
     try {
         const response = await fetch(WEB_APP_URL);
@@ -42,7 +42,6 @@ async function cargarVendidos() {
 
         document.querySelectorAll(".number").forEach(div => {
             let num = Number(div.dataset.numero);
-
             if (vendidos[num]) {
                 div.classList.add("sold");
                 div.title = "Vendido a: " + vendidos[num].nombre + " " + vendidos[num].apellido;
@@ -54,10 +53,11 @@ async function cargarVendidos() {
     }
 }
 
+// Sorteo
 async function realizarSorteo() {
     let clave = prompt("Contraseña admin:");
 
-    if (clave !== "admin123") {
+    if (clave !== "20s@nto$26") {
         alert("Contraseña incorrecta");
         return;
     }
@@ -73,14 +73,15 @@ async function realizarSorteo() {
 
         let ganador = data[Math.floor(Math.random() * data.length)];
 
-        // Mostrar pantalla especial
         document.getElementById("numeroGrande").innerText = ganador.numero;
         document.getElementById("nombreGanador").innerText =
             ganador.nombre + " " + ganador.apellido;
 
-        document.getElementById("pantallaGanador").classList.remove("hidden");
+        document.getElementById("pantallaGanador").style.display = "flex";
 
-        // Resaltar número en la grilla
+        document.querySelectorAll(".ganador-numero")
+            .forEach(el => el.classList.remove("ganador-numero"));
+
         const div = document.querySelector(`[data-numero='${ganador.numero}']`);
         div.classList.add("ganador-numero");
 
@@ -90,18 +91,15 @@ async function realizarSorteo() {
 }
 
 function cerrarGanador() {
-    document.getElementById("pantallaGanador").classList.add("hidden");
+    document.getElementById("pantallaGanador").style.display = "none";
 }
 
-
+// Reiniciar
 async function reiniciarRifa() {
     let clave = prompt("Contraseña de administrador:");
-
     if (!clave) return;
 
-    if (!confirm("¿Seguro que deseas borrar TODOS los registros?")) {
-        return;
-    }
+    if (!confirm("¿Seguro que deseas borrar TODOS los registros?")) return;
 
     try {
         const response = await fetch(WEB_APP_URL, {
@@ -126,14 +124,16 @@ async function reiniciarRifa() {
     }
 }
 
+// Modal
 function cerrarModal() {
     document.getElementById("modal").classList.add("hidden");
     document.getElementById("nombreInput").value = "";
     document.getElementById("apellidoInput").value = "";
 }
 
+// Confirmar registro
 async function confirmarRegistro() {
-    if (registrando) return; // 🔐 evita doble envío
+    if (registrando) return;
     registrando = true;
 
     const nombre = document.getElementById("nombreInput").value.trim();
@@ -146,49 +146,34 @@ async function confirmarRegistro() {
     }
 
     const numero = numeroActual;
-
     const div = document.querySelector(`[data-numero='${numero}']`);
-    div.classList.add("sold");
-    div.classList.add("loading");
 
+    div.classList.add("sold");
     cerrarModal();
 
     try {
         const response = await fetch(WEB_APP_URL, {
             method: "POST",
-            body: JSON.stringify({
-                numero,
-                nombre,
-                apellido
-            })
+            body: JSON.stringify({ numero, nombre, apellido })
         });
 
         const result = await response.json();
 
-        if (result.success) {
-            div.classList.remove("loading");
-            vendidos[numero] = { nombre, apellido };
-            setTimeout(() => {
-                cargarVendidos();
-            }, 300);
-
-            div.title = `Vendido a: ${nombre} ${apellido}`;
-        } else {
+        if (!result.success) {
             div.classList.remove("sold");
-            div.classList.remove("loading");
             alert("Número ya tomado");
+        } else {
+            vendidos[numero] = { nombre, apellido };
         }
 
     } catch (error) {
         div.classList.remove("sold");
-        div.classList.remove("loading");
         alert("Error al registrar");
     }
 
     registrando = false;
 }
 
-
-// Ejecutar en orden correcto
+// Inicializar
 crearNumeros();
 cargarVendidos();
