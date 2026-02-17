@@ -1,3 +1,15 @@
+.admin-btn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0.3;
+    font-size: 12px;
+}
+
+.admin-btn:hover {
+    opacity: 1;
+}
+
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
@@ -133,4 +145,55 @@ button {
 .ganador-numero {
     background-color: gold !important;
     color: black !important;
+}
+
+/* =========================
+   PUBLICIDAD PROMOCIONAL
+========================= */
+
+.promo-box {
+    background: linear-gradient(135deg, #1f3c88, #1c2541);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    animation: fadeIn 0.6s ease;
+}
+
+.promo-title {
+    font-size: 26px;
+    margin-bottom: 10px;
+    color: #ffd700;
+}
+
+.promo-sub {
+    font-style: italic;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.promo-highlight {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.promo-price {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.promo-price span {
+    color: #00ff99;
+    font-size: 28px;
+}
+
+.promo-install {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
