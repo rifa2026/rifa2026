@@ -8,9 +8,6 @@ let registrando = false;
 let adminAutorizado = false;
 let adminPassword = "";
 
-/* =========================
-   CREAR NUMEROS
-========================= */
 function crearNumeros() {
     grid.innerHTML = "";
 
@@ -38,9 +35,6 @@ function crearNumeros() {
     }
 }
 
-/* =========================
-   ACTIVAR ADMIN
-========================= */
 function activarAdmin() {
     document.getElementById("modalPassword").classList.remove("hidden");
 }
@@ -80,9 +74,6 @@ async function confirmarPassword() {
     }
 }
 
-/* =========================
-   CARGAR VENDIDOS
-========================= */
 async function cargarVendidos() {
     try {
         const response = await fetch(WEB_APP_URL);
@@ -108,9 +99,6 @@ async function cargarVendidos() {
     }
 }
 
-/* =========================
-   SORTEO
-========================= */
 async function realizarSorteo() {
 
     if (!adminAutorizado) {
@@ -142,9 +130,6 @@ async function realizarSorteo() {
     }
 }
 
-/* =========================
-   RESET
-========================= */
 async function reiniciarRifa() {
 
     if (!adminAutorizado) {
@@ -177,9 +162,6 @@ async function reiniciarRifa() {
     }
 }
 
-/* =========================
-   REGISTRAR
-========================= */
 async function confirmarRegistro() {
 
     if (!adminAutorizado) {
@@ -232,3 +214,4 @@ async function confirmarRegistro() {
 ========================= */
 crearNumeros();
 cargarVendidos();
+
